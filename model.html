@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Matematika Distribusi CPO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            color: #2d3748;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+
+        .subsection {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .subsection-title {
+            color: #4a5568;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .variable-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .variable-list li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            transition: transform 0.2s;
+        }
+
+        .variable-list li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .variable-code {
+            font-family: 'Courier New', monospace;
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        .formula-box {
+            background: #2d3748;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.3em;
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .constraint-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+            transition: all 0.3s;
+        }
+
+        .constraint-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .constraint-formula {
+            font-family: 'Courier New', monospace;
+            color: #2d3748;
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+
+        .note {
+            background: #fef5e7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-top: 3px solid #667eea;
+        }
+
+        .info-label {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #2d3748;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 MODEL</h1>
+            <p>Optimasi Distribusi Kelapa Sawit (TBS & CPO)</p>
+        </div>
+
+        <div class="content">
+            <!-- Variabel Keputusan -->
+            <div class="section">
+                <h2 class="section-title">🎯 Variabel Keputusan</h2>
+                
+                <div class="subsection">
+                    <h3 class="subsection-title">Tahap 1: Kebun → Pabrik</h3>
+                    <ul class="variable-list">
+                        <li>
+                            <span class="variable-code">X<sub>ij</sub></span> = Jumlah TBS (ton) yang dikirim dari Kebun <em>i</em> ke Pabrik <em>j</em>
+                        </li>
+                    </ul>
+                    <div class="grid-2">
+                        <div class="info-card">
+                            <div class="info-label">Indeks Kebun (i)</div>
+                            <div class="info-value">A, B, C</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Indeks Pabrik (j)</div>
+                            <div class="info-value">1, 2</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Tahap 2: Pabrik → Pusat Distribusi</h3>
+                    <ul class="variable-list">
+                        <li>
+                            <span class="variable-code">Y<sub>jk</sub></span> = Jumlah CPO (ton) yang dikirim dari Pabrik <em>j</em> ke PD <em>k</em>
+                        </li>
+                    </ul>
+                    <div class="grid-2">
+                        <div class="info-card">
+                            <div class="info-label">Indeks Pabrik (j)</div>
+                            <div class="info-value">1, 2</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Indeks PD (k)</div>
+                            <div class="info-value">1, 2, 3, 4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fungsi Tujuan -->
+            <div class="section">
+                <h2 class="section-title">🎯 Fungsi Tujuan</h2>
+                <div class="subsection">
+                    <h3 class="subsection-title">Minimisasi Total Biaya Transportasi</h3>
+                    <div class="formula-box">
+                        Min Z = Σ(C<sub>ij</sub> × X<sub>ij</sub>) + Σ(D<sub>jk</sub> × Y<sub>jk</sub>)
+                    </div>
+                    <div class="note">
+                        <strong>Keterangan:</strong><br>
+                        • <span class="variable-code">C<sub>ij</sub></span> = Biaya transport TBS dari kebun <em>i</em> ke pabrik <em>j</em><br>
+                        • <span class="variable-code">D<sub>jk</sub></span> = Biaya transport CPO dari pabrik <em>j</em> ke PD <em>k</em>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kendala -->
+            <div class="section">
+                <h2 class="section-title">⚙️ Kendala</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">1. Kapasitas Kebun</h3>
+                    <div class="constraint-item">
+                        <div>Kebun A:</div>
+                        <div class="constraint-formula">X<sub>A1</sub> + X<sub>A2</sub> ≤ 5000</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>Kebun B:</div>
+                        <div class="constraint-formula">X<sub>B1</sub> + X<sub>B2</sub> ≤ 4000</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>Kebun C:</div>
+                        <div class="constraint-formula">X<sub>C1</sub> + X<sub>C2</sub> ≤ 3500</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">2. Kapasitas Pabrik</h3>
+                    <div class="constraint-item">
+                        <div>Pabrik 1:</div>
+                        <div class="constraint-formula">X<sub>A1</sub> + X<sub>B1</sub> + X<sub>C1</sub> ≤ 6000</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>Pabrik 2:</div>
+                        <div class="constraint-formula">X<sub>A2</sub> + X<sub>B2</sub> + X<sub>C2</sub> ≤ 5000</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">3. Konversi TBS ke CPO</h3>
+                    <div class="note">
+                        <strong>Yield: <span class="highlight">22%</span></strong>
+                    </div>
+                    <div class="constraint-item">
+                        <div>Produksi CPO Pabrik 1:</div>
+                        <div class="constraint-formula">= 0.22 × (X<sub>A1</sub> + X<sub>B1</sub> + X<sub>C1</sub>)</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>Produksi CPO Pabrik 2:</div>
+                        <div class="constraint-formula">= 0.22 × (X<sub>A2</sub> + X<sub>B2</sub> + X<sub>C2</sub>)</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">4. Balance Produksi dan Distribusi</h3>
+                    <div class="constraint-item">
+                        <div>Pabrik 1:</div>
+                        <div class="constraint-formula">Y<sub>11</sub> + Y<sub>12</sub> + Y<sub>13</sub> + Y<sub>14</sub> = 0.22 × (X<sub>A1</sub> + X<sub>B1</sub> + X<sub>C1</sub>)</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>Pabrik 2:</div>
+                        <div class="constraint-formula">Y<sub>21</sub> + Y<sub>22</sub> + Y<sub>23</sub> + Y<sub>24</sub> = 0.22 × (X<sub>A2</sub> + X<sub>B2</sub> + X<sub>C2</sub>)</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">5. Pemenuhan Permintaan</h3>
+                    <div class="constraint-item">
+                        <div>PD 1:</div>
+                        <div class="constraint-formula">Y<sub>11</sub> + Y<sub>21</sub> ≥ 600</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>PD 2:</div>
+                        <div class="constraint-formula">Y<sub>12</sub> + Y<sub>22</sub> ≥ 800</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>PD 3:</div>
+                        <div class="constraint-formula">Y<sub>13</sub> + Y<sub>23</sub> ≥ 500</div>
+                    </div>
+                    <div class="constraint-item">
+                        <div>PD 4:</div>
+                        <div class="constraint-formula">Y<sub>14</sub> + Y<sub>24</sub> ≥ 650</div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">6. Non-negativitas</h3>
+                    <div class="constraint-item">
+                        <div class="constraint-formula">Semua X<sub>ij</sub>, Y<sub>jk</sub> ≥ 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
